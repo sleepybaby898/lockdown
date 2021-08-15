@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+    
+    <head>
+        <meta charset="utf-0">
+        <meta name="viewport" content="width=device-width">
+        <script src="https://kit.fontawesome.com/b739dbf8d3.js" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/core.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/md5.js"></script>
+        <title>lockdown</title>
+        <style>
+            body {
+                background-color:#0f0f0f
+            }
+            p {
+                color: #f0f0f0;
+                font-family: Arial, Helvetica, sans-serif;
+            }
+            h1 {
+                color: #f0f0f0;
+                font-family: Arial, Arial, Helvetica, sans-serif;
+            }
+            .text {
+                color: #f0f0f0;
+                font-family: Arial, Helvetica, sans-serif;
+            }
+            .input {
+                color: #0f0f0f;
+                font-family: Arial, Helvetica, sans-serif;
+                border: 1px solid #f0f0f0;
+                border-radius: 5px;
+                background-color: #0f0f0f;
+                color: #f0f0f0;
+                padding: 4.5px 9px;
+                font-size: 11px;
+                margin: 5px;
+            }
+            .inputalt {
+                color: #0f0f0f;
+                font-family: Arial, Helvetica, sans-serif;
+                border: 1px solid #f0f0f0;
+                border-radius: 5px;
+                background-color: #0f0f0f;
+                color: #f0f0f0;
+                padding: 9px 18px;
+                font-size 16px;
+                margin: 5px;
+            }
+            .fa-lock {
+                color: #f0f0f0;
+            }
+            .fa-check {
+                color: #f0f0f0;
+            }
+            .logo {
+                width: 50%;
+                align-self: center;
+            }
+            .center {
+                width: 40%;
+                align-self: center;
+                display: inline-block;
+            }
+            .lockdown {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
+            .button {
+                border: 1px solid #f0f0f0;
+                border-radius: 5px;
+                background-color: #0f0f0f;
+                color: #f0f0f0;
+                padding: 9px 18px;
+                font-size: 16px;
+                cursor: pointer;
+                margin: 5px;
+            }
+            .form-popup {
+                display: none;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                border: 3px solid #f0f0f0;
+                border-radius: 5px;
+                z-index: 9;
+            }
+            .form-container {
+                max-width: 300px;
+                padding: 10px;
+                background-color: #0f0f0f;
+            }
+        </style>
+    </head>
+    <body>
+        <center>
+        <div class="form-popup" id="loginForm">
+            <div class="form-container">
+                <h1>log in</h1>
+                <label class="text" for="username">username:</label>
+                <input id="usernamein" type="text" class="input" placeholder="username" name="username" required>
+                <br>
+                <label class="text" for="password">password:</label>
+                <input id="passwordin" type="password" class="input" placeholder="password" name="password" required>
+                <br>
+                <button class="button default" onclick="login();"<i class="fas fa-check"</i> login</button>
+            </div>
+        </div>
+        <div class="lockdown" id="lockdown">
+            <i class="fas fa-lock fa-10x logo"></i>
+            <!-- <img class="logo" src="https://lockup.wtf/assets/img/logonobg.png"</img> -->
+            <br>
+            <br>
+            <br>
+            <button class="button default" onclick="openPop();"><i class="fas fa-sign-in-alt"></i> login</button>
+            <button class="button default" onclick="about();"><i class="fas fa-info-circle"></i> about</button>
+            <!-- <button class="button default" onclick="alert('register');"><i class="fas fa-user-plus"></i> register</button> -->
+	        <br>
+            <br>
+            <br>
+        </div>
+        <div class="loggedin" id="loggedin" style="display: none">
+            <h1 id="welcomeh1">Welcome.</h1>
+            <button class="button default" onclick="window.location.replace('https://www.youtube.com/watch?v=vAuA4E83ZzE');"><i class="fas fa-toilet"></i></button><br>
+            <p id="dadjoke" class="text"><b>Loading joke...</b></h1>
+        </div>
+        <div class="about" id="about" style="display: none">
+            <h1>What is lockdown?</h1>
+            <br>
+            <br>
+            <br>
+            <br>
+            <p>Lockdown is a webserver which lets you connect to your home and do things from anywhere. It also provides a variety of other fun things and links in the dashboard.</p>
+        </div>
+        <center>
+        <script>
+            function openPop() {
+                document.getElementById("loginForm").style.display = "block";
+                affirmations()
+            }
+            function closePop() {
+                document.getElementById("loginForm").style.display = "none";            
+            }
+            function loggedIn(username) {
+                console.log("<-- Hello -->")
+                document.getElementById("lockdown").style.display = "none";
+                document.getElementById("loggedin").style.display = "block";
+                document.getElementById("welcomeh1").innerHTML = "Welcome to your dashboard, " + username.charAt(0).toUpperCase() + username.slice(1) + ".";
+            }
+            function about() {
+                document.getElementById("lockdown").style.display = "none";
+                document.getElementById("about").style.display = "block";
+            }
+            function login() {
+                closePop();
+                let username = document.getElementById("usernamein").value;
+                let password = document.getElementById("passwordin").value;
+                const wacky = {"username": username, "password": password}
+                <!-- Put your usernames and passwords here. Make sure it is an md5 hash and that the password is strong -->
+                const users = {
+                    "users":[
+                      {"username": "exampleuser", "password": "md5hashofpword"},
+                    ]
+                }
+                for (let x in users["users"]) {
+                    if (users["users"][x].password == CryptoJS.MD5(wacky.password).toString() && users["users"][x].username == wacky.username) {
+                        loggedIn(wacky.username);
+                        return;
+                    }
+                }
+                alert("Incorrect username or password.")
+            }
+            function affirmations() {
+                const jokeDisplay = document.getElementById('dadjoke');
+                fetch("https://icanhazdadjoke.com/", {
+                    headers: {
+                        "Accept": "application/json"
+                    }
+                })
+                .then(function (response) {
+                    return response.json();
+                })
+                .then(function (data) {
+                    jokeDisplay.textContent = data.joke;
+                })
+            }
+        </script>
+    </body>
+
+</html>
